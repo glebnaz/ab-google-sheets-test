@@ -17,6 +17,8 @@ func main() {
 		panic(err)
 	}
 	v, err := table.GetValues(range_)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println(v)
-	fmt.Println(err)
 }
