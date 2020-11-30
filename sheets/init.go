@@ -11,6 +11,7 @@ import (
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
+	"golang.org/x/oauth2/jwt"
 	"google.golang.org/api/sheets/v4"
 )
 
@@ -18,18 +19,8 @@ func InitSheet(id string) (Sheet, error) {
 	if len(id) == 0 {
 		return nil, fmt.Errorf("Empty id sheet")
 	}
-	b, err := ioutil.ReadFile("credentials.json")
-	if err != nil {
-		return nil, fmt.Errorf("Unable to read client secret file: %v", err)
-	}
 
-	// If modifying these scopes, delete your previously saved token.json.
-	config, err := google.ConfigFromJSON(b, "https://www.googleapis.com/auth/spreadsheets.readonly")
-	if err != nil {
-		return nil, fmt.Errorf("Unable to parse client secret file to config: %v", err)
-	}
-	client := getClient(config)
-
+	client := serviceClient("credentials.json")
 	service, err := sheets.New(client)
 	if err != nil {
 		return nil, fmt.Errorf("Unable to retrieve Sheets client: %v", err)
@@ -97,4 +88,26 @@ func saveToken(path string, token *oauth2.Token) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func serviceClient(credentialFile string) *http.Client {
+	b, err := ioutil.ReadFile(credentialFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var c = struct {
+		Email      string `json:"client_email"`
+		PrivateKey string `json:"private_key"`
+	}{}
+	json.Unmarshal(b, &c)
+	config := &jwt.Config{
+		Email:      c.Email,
+		PrivateKey: []byte(c.PrivateKey),
+		Scopes: []string{
+			sheets.DriveScope,
+		},
+		TokenURL: google.JWTTokenURL,
+	}
+	client := config.Client(oauth2.NoContext)
+	return client
 }
