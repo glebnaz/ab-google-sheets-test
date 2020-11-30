@@ -1,14 +1,15 @@
 package sheets
 
 import (
+	"fmt"
+
 	gsheets "google.golang.org/api/sheets/v4"
 )
 
 //Sheet is table from google sheets
 //this interface implemented
 type Sheet interface {
-	GetAllValues() ([][]string, error)
-	GetRangeValues(range_ Range) ([][]string, error)
+	GetValues(range_ Range) ([][]string, error)
 }
 
 type sheet struct {
@@ -20,14 +21,26 @@ type sheet struct {
 	srv *gsheets.Service
 }
 
-//GetAllValues return all values in table
-func (s *sheet) GetAllValues() ([][]string, error) {
+//GetValues retrun data from table by [][]string
+//range is Range type to get Values
+func (s *sheet) GetValues(range_ Range) ([][]string, error) {
 	var data [][]string
-	return data, nil
-}
+	r := fmt.Sprintf("%s!%s:%s", range_.List, range_.Start, range_.End)
 
-//GetRangeValues retrun data from table by data
-func (s *sheet) GetRangeValues(range_ Range) ([][]string, error) {
-	var data [][]string
+	rsp, err := s.srv.Spreadsheets.Values.Get(s.id, r).Do()
+	if err != nil {
+		return nil, err
+	}
+	if len(rsp.Values) == 0 {
+		return nil, fmt.Errorf("Empty Values")
+	}
+
+	for _, row := range rsp.Values {
+		var d []string
+		for _, col := range row {
+			d = append(d, fmt.Sprintf("%v", col))
+		}
+		data = append(data, d)
+	}
 	return data, nil
 }
