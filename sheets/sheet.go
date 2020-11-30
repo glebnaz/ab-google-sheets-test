@@ -7,8 +7,8 @@ import (
 //Sheet is table from google sheets
 //this interface implemented
 type Sheet interface {
-	GetAllValues() (map[string]string, error)
-	GetRangeValues(range_ Range) (map[string]string, error)
+	GetAllValues() ([][]string, error)
+	GetRangeValues(range_ Range) ([][]string, error)
 }
 
 type sheet struct {
@@ -18,4 +18,16 @@ type sheet struct {
 	id string
 	//srv is Service from google lib api
 	srv *gsheets.Service
+}
+
+//GetAllValues return all values in table
+func (s *sheet) GetAllValues() ([][]string, error) {
+	var data [][]string
+	return data, nil
+}
+
+//GetRangeValues retrun data from table by data
+func (s *sheet) GetRangeValues(range_ Range) ([][]string, error) {
+	var data [][]string
+	return data, nil
 }
