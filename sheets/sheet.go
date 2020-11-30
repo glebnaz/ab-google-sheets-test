@@ -25,7 +25,10 @@ type sheet struct {
 //range is Range type to get Values
 func (s *sheet) GetValues(range_ Range) ([][]string, error) {
 	var data [][]string
-	r := fmt.Sprintf("%s!%s:%s", range_.List, range_.Start, range_.End)
+	r, err := range_.GetRangeString()
+	if err != nil {
+		return nil, err
+	}
 
 	rsp, err := s.srv.Spreadsheets.Values.Get(s.id, r).Do()
 	if err != nil {
