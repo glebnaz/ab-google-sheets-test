@@ -15,7 +15,6 @@ func (r Range) GetRangeString() (string, error) {
 	}
 	if len(r.List) == 0 {
 		return fmt.Sprintf("%s:%s", r.Start, r.End), nil
-	} else {
-		return fmt.Sprintf("%s!%s:%s", r.List, r.Start, r.End), nil
 	}
+	return fmt.Sprintf("%s!%s:%s", r.List, r.Start, r.End), nil
 }

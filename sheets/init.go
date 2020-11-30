@@ -15,6 +15,9 @@ import (
 )
 
 func InitSheet(id string) (Sheet, error) {
+	if len(id) == 0 {
+		return nil, fmt.Errorf("Empty id sheet")
+	}
 	b, err := ioutil.ReadFile("credentials.json")
 	if err != nil {
 		return nil, fmt.Errorf("Unable to read client secret file: %v", err)
@@ -27,18 +30,15 @@ func InitSheet(id string) (Sheet, error) {
 	}
 	client := getClient(config)
 
-	srv, err := sheets.New(client)
+	service, err := sheets.New(client)
 	if err != nil {
 		return nil, fmt.Errorf("Unable to retrieve Sheets client: %v", err)
 	}
-	if len(id) == 0 {
-		return nil, fmt.Errorf("Empty id sheet")
-	}
-	shts := sheet{
-		srv: srv,
+	sheets := sheet{
+		srv: service,
 		id:  id,
 	}
-	return &shts, nil
+	return &sheets, nil
 }
 
 // Retrieve a token, saves the token, then returns the generated client.
@@ -93,5 +93,8 @@ func saveToken(path string, token *oauth2.Token) {
 		log.Fatalf("Unable to cache oauth token: %v", err)
 	}
 	defer f.Close()
-	json.NewEncoder(f).Encode(token)
+	err = json.NewEncoder(f).Encode(token)
+	if err != nil {
+		panic(err)
+	}
 }
