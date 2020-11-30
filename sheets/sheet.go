@@ -8,7 +8,7 @@ import (
 //this interface implemented
 type Sheet interface {
 	GetAllValues() (map[string]string, error)
-	GetRangeValues(range_ string) (map[string]string, error)
+	GetRangeValues(range_ Range) (map[string]string, error)
 }
 
 type sheet struct {
