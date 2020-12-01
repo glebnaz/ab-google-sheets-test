@@ -39,7 +39,7 @@ func TestSheets(t *testing.T) {
 		t.Fatal("Empty idSheet")
 	}
 
-	diaposon := sheets.Range{
+	diapason := Range{
 		Start: os.Getenv(KeyStart),
 		End:   os.Getenv(KeyEnd),
 		List:  os.Getenv(KeyList),
@@ -48,7 +48,8 @@ func TestSheets(t *testing.T) {
 	t.Run("Positive Sheets Test", func(t *testing.T) {
 		table, err := InitSheet(idSheet)
 		assert.Nil(err)
-		table.GetValues()
+		values, err := table.GetValues(diapason)
+		assert.NotNil(values)
 		assert.Nil(err)
 	})
 }
