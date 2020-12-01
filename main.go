@@ -18,9 +18,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	v, err := table.GetValues(range_)
+	dataTable, err := table.GetValues(range_)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(v)
+	for _, row := range dataTable {
+		for _, col := range row {
+			fmt.Printf(" %s ", col)
+		}
+		fmt.Printf("\n")
+	}
 }
