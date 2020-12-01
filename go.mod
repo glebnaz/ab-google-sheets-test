@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	cloud.google.com/go v0.72.0 // indirect
+	github.com/blend/go-sdk v1.1.1
 	golang.org/x/net v0.0.0-20201110031124-69a78807bb2b // indirect
 	golang.org/x/oauth2 v0.0.0-20201109201403-9fd604954f58
 	golang.org/x/sys v0.0.0-20201130072748-111129e158e2 // indirect
