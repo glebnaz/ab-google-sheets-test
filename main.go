@@ -9,16 +9,16 @@ import (
 
 func main() {
 	tableID := os.Getenv(sheets.KeyID)
-	range_ := sheets.Range{
-		Start: "A1",
-		End:   "C3",
-		List:  "",
+	diapason := sheets.Range{
+		Start: os.Getenv(sheets.KeyStart),
+		End:   os.Getenv(sheets.KeyEnd),
+		List:  os.Getenv(sheets.KeyList),
 	}
 	table, err := sheets.InitSheet(tableID)
 	if err != nil {
 		panic(err)
 	}
-	dataTable, err := table.GetValues(range_)
+	dataTable, err := table.GetValues(diapason)
 	if err != nil {
 		panic(err)
 	}
