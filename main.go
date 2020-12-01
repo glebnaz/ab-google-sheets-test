@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/glebnaz/ab-google-sheets-test/sheets"
 )
 
-const tableID = ""
-
 func main() {
+	tableID := os.Getenv(sheets.KeyID)
 	range_ := sheets.Range{
 		Start: "A1",
 		End:   "C3",
