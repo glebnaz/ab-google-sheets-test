@@ -1,8 +1,5 @@
 # ab-google-sheets-test
 
-Created: Nov 30, 2020 4:47 PM
-Tags: Andersen
-
 ## Env Variable:
 
 - START - start for range table
